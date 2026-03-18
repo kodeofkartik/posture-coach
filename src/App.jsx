@@ -1,4 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { useAuth } from './contexts/AuthContext';
+import AuthPage from './components/AuthPage';
 import Webcam from './components/Webcam';
 import PostureFeedback from './components/PostureFeedback';
 import SessionTracker from './components/SessionTracker';
@@ -11,6 +13,8 @@ import { loadSessions } from './utils/sessionStorage';
 import './App.css';
 
 export default function App() {
+  const { user, loading: authLoading, signOut } = useAuth();
+
   const [modelReady, setModelReady] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
@@ -88,6 +92,20 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
+  // Show loading spinner while checking auth
+  if (authLoading) {
+    return (
+      <div className="auth-loading">
+        <span className="spinner" />
+      </div>
+    );
+  }
+
+  // Show auth page if not signed in
+  if (!user) {
+    return <AuthPage />;
+  }
+
   return (
     <div className="app">
       <header className="header">
@@ -104,9 +122,13 @@ export default function App() {
             </defs>
           </svg>
         </div>
-        <div>
+        <div style={{ flex: 1 }}>
           <h1>Posture Coach</h1>
           <p className="subtitle">AI-powered posture monitoring & health insights</p>
+        </div>
+        <div className="header-user">
+          <span className="user-email">{user.email}</span>
+          <button className="btn-ghost-sm" onClick={signOut}>Sign Out</button>
         </div>
       </header>
 
@@ -178,12 +200,6 @@ export default function App() {
           />
         </div>
       </main>
-
-      <footer className="footer">
-        <span>Posture Coach</span>
-        <span className="footer-dot">&middot;</span>
-        <span>Built with TensorFlow.js & MoveNet</span>
-      </footer>
 
       {(viewSession || lastSession) && (
         <SessionSummary

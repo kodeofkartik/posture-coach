@@ -41,7 +41,6 @@ export default function SessionHistory({ sessions, onViewSession }) {
           );
         })}
       </div>
-      <p className="history-storage">Saved in browser localStorage</p>
     </div>
   );
 }
