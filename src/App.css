@@ -89,6 +89,7 @@ body {
   flex-direction: column;
   gap: 12px;
   flex-shrink: 0;
+  flex-grow: 0;
 }
 
 /* ── Video ── */
@@ -242,12 +243,13 @@ body {
   text-align: center;
   border: 1px solid var(--border);
   background: var(--surface);
-  transition: all 0.3s;
-  min-height: 200px;
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+  height: 210px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .feedback-card.good {
@@ -318,6 +320,7 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px;
+  min-height: 170px;
 }
 
 .session-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
